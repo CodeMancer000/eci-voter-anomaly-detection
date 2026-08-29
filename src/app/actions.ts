@@ -168,6 +168,8 @@ export async function trackApplication(query: string) {
     }
 }
 
+import { VoterApplication, AuditLog } from "@prisma/client";
+
 /**
  * Fetch Admin Dashboard Metrics & Queues
  */
@@ -184,21 +186,21 @@ export async function getAdminDashboardData() {
         });
 
         const totalApplications = applications.length;
-        const lowRiskCount = applications.filter((a) => a.riskLevel === "LOW").length;
-        const mediumRiskCount = applications.filter((a) => a.riskLevel === "MEDIUM").length;
-        const highRiskCount = applications.filter((a) => a.riskLevel === "HIGH").length;
-        const criticalRiskCount = applications.filter((a) => a.riskLevel === "CRITICAL").length;
+        const lowRiskCount = applications.filter((a: VoterApplication) => a.riskLevel === "LOW").length;
+        const mediumRiskCount = applications.filter((a: VoterApplication) => a.riskLevel === "MEDIUM").length;
+        const highRiskCount = applications.filter((a: VoterApplication) => a.riskLevel === "HIGH").length;
+        const criticalRiskCount = applications.filter((a: VoterApplication) => a.riskLevel === "CRITICAL").length;
 
-        const flaggedCount = applications.filter((a) => a.status === "FLAGGED_DUPLICATE").length;
-        const pendingCount = applications.filter((a) => a.status === "PENDING").length;
-        const approvedCount = applications.filter((a) => a.status === "APPROVED").length;
-        const rejectedCount = applications.filter((a) => a.status === "REJECTED").length;
+        const flaggedCount = applications.filter((a: VoterApplication) => a.status === "FLAGGED_DUPLICATE").length;
+        const pendingCount = applications.filter((a: VoterApplication) => a.status === "PENDING").length;
+        const approvedCount = applications.filter((a: VoterApplication) => a.status === "APPROVED").length;
+        const rejectedCount = applications.filter((a: VoterApplication) => a.status === "REJECTED").length;
 
         // Specific anomaly detector counts
         let photoMatchCount = 0;
         let epicConflictCount = 0;
 
-        applications.forEach((app) => {
+        applications.forEach((app: VoterApplication) => {
             const breakdown = (app.anomalyBreakdown as any[]) || [];
             if (breakdown.some((b) => b.detectorId === "PHOTO_SIMILARITY" && b.status === "FLAG")) {
                 photoMatchCount++;
@@ -237,7 +239,7 @@ export async function getAdminDashboardData() {
                 epicConflictCount,
             },
             applications,
-            auditLogs: auditLogs.map((log) => ({
+            auditLogs: auditLogs.map((log: AuditLog & { application: { applicationNumber: string; fullName: string; } | null }) => ({
                 id: log.id,
                 applicationId: log.applicationId,
                 applicationNumber: log.application?.applicationNumber || "N/A",
