@@ -1,0 +1,108 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum RiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum ApplicationStatus {
+  PENDING
+  FLAGGED_DUPLICATE
+  FIELD_VERIFICATION_REQUESTED
+  INFO_REQUESTED
+  APPROVED
+  REJECTED
+}
+
+model VoterApplication {
+  id                String            @id @default(cuid())
+  applicationNumber String            @unique
+  fullName          String
+  normalizedName    String            @default("")
+  relativeName      String?
+  relationType      String?           // Father, Mother, Spouse, Guardian
+  dateOfBirth       DateTime
+  gender            String
+  address           String
+  pincode           String
+  email             String
+  mobile            String
+  epicNumber        String?
+  aadhaarOptional   String?
+  photoUrl          String?
+  documentUrl       String?
+  status            ApplicationStatus @default(PENDING)
+  riskScore         Float             @default(0)
+  duplicateScore    Float?            // Retained for backward compatibility
+  riskLevel         RiskLevel         @default(LOW)
+  anomalyBreakdown  Json?             // 10 Anomaly Detectors breakdown
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  flags             DuplicateFlag[]   @relation("ApplicationFlags")
+  auditLogs         AuditLog[]
+}
+
+model Voter {
+  id              String   @id @default(cuid())
+  voterIdNumber   String   @unique
+  fullName        String
+  normalizedName  String   @default("")
+  relativeName    String?
+  relationType    String?
+  dateOfBirth     DateTime
+  gender          String
+  address         String
+  pincode         String
+  email           String
+  mobile          String
+  epicNumber      String?
+  photoUrl        String?
+  isDeadOrShifted Boolean  @default(false)
+  createdAt       DateTime @default(now())
+}
+
+model DuplicateFlag {
+  id                  String           @id @default(cuid())
+  applicationId       String
+  application         VoterApplication @relation("ApplicationFlags", fields: [applicationId], references: [id], onDelete: Cascade)
+  matchedVoterId      String?
+  matchedVoterName    String
+  matchedVoterDetails Json
+  overallScore        Float
+  fieldBreakdown      Json
+  createdAt           DateTime         @default(now())
+}
+
+model AuditLog {
+  id            String           @id @default(cuid())
+  applicationId String
+  application   VoterApplication @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  action        String
+  performedBy   String
+  notes         String?
+  createdAt     DateTime         @default(now())
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  hasVoted  Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model Candidate {
+  id        String   @id @default(cuid())
+  name      String
+  party     String
+  voteCount Int      @default(0)
+  createdAt DateTime @default(now())
+}

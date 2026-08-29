@@ -1,0 +1,27 @@
+{
+  "node": {
+    "4025c799bc0d05f312ecf7be66ea029ac2b7193555": {
+      "workers": {
+        "app/page": {
+          "moduleId": 32989,
+          "async": true,
+          "codeHash": null
+        }
+      },
+      "exportedName": "submitVoterApplication",
+      "filename": "src/app/actions.ts"
+    },
+    "40484533c92b3c91d30cad435e80a3792e4cd3964e": {
+      "workers": {
+        "app/page": {
+          "moduleId": 32989,
+          "async": true,
+          "codeHash": null
+        }
+      },
+      "exportedName": "trackApplication",
+      "filename": "src/app/actions.ts"
+    }
+  },
+  "edge": {}
+}

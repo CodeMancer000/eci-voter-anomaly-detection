@@ -1,0 +1,27 @@
+{
+  "node": {
+    "002b432b3f26a282f84da354cb97c6c791efec1cef": {
+      "workers": {
+        "app/admin/page": {
+          "moduleId": 50284,
+          "async": true,
+          "codeHash": null
+        }
+      },
+      "exportedName": "getAdminDashboardData",
+      "filename": "src/app/actions.ts"
+    },
+    "40ebb2eddb0f2feae16f90883280f23da0c981a476": {
+      "workers": {
+        "app/admin/page": {
+          "moduleId": 50284,
+          "async": true,
+          "codeHash": null
+        }
+      },
+      "exportedName": "reviewApplication",
+      "filename": "src/app/actions.ts"
+    }
+  },
+  "edge": {}
+}
