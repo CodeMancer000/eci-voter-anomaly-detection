@@ -1,3 +1,0 @@
-module.exports=[79827,a=>a.a(async(b,c)=>{try{var d=a.i(22918),e=b([d]);[d]=e.then?(await e)():e,a.s([]),c()}catch(a){c(a)}},!1),50284,a=>a.a(async(b,c)=>{try{var d=a.i(79827),e=a.i(22918),f=b([d,e]);[d,e]=f.then?(await f)():f,a.s(["002b432b3f26a282f84da354cb97c6c791efec1cef",()=>e.getAdminDashboardData,"40ebb2eddb0f2feae16f90883280f23da0c981a476",()=>e.reviewApplication]),c()}catch(a){c(a)}},!1)];
-
-//# sourceMappingURL=_next-internal_server_app_admin_page_actions_1rnai_3.js.map
